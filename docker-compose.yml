@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - clickhouse
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    container_name: clickhouse
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    volumes:
+      - ./clickhouse-setup:/var/lib/clickhouse
+      - ./clickhouse-setup/clickhouse-init.sql:/docker-entrypoint-initdb.d/init.sql
+
